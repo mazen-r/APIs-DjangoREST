@@ -1,5 +1,6 @@
 from typing import Generic
 from rest_framework import authentication, generics, permissions
+from api.authentication import TokenAuthentication
 from .models import Product
 from .serializers import ProductSerializer
 from .permissions import IsStaffEditorPermission
@@ -13,7 +14,10 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
         if content is None:
             content = title
         serializers.save(content=content)
-        authentication_classes = [authentication.SessionAuthentication]
+        authentication_classes = [
+            authentication.SessionAuthentication,
+            TokenAuthentication,
+        ]
         permission_class = [permissions.IsAdminUser, IsStaffEditorPermission]  
 
 
